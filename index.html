@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="ProxyFarm's preserved 2021 proxy dashboard." />
+    <meta name="theme-color" content="#27c88a" />
+    <title>ProxyFarm — 2021</title>
+    <link rel="icon" href="assets/proxyfarm-logo.png" type="image/png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <section class="login-screen" id="login-screen" aria-labelledby="login-title">
+      <div class="login-card">
+        <p class="gradient-kicker">Premium Residential and ISP proxies</p>
+        <h1 id="login-title">PROXYFARM</h1>
+        <button class="dashboard-entry" id="dashboard-entry" type="button">
+          <img src="assets/proxyfarm-arrow.png" alt="" />
+          <span>Open the 2021 console</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m13 5 7 7-7 7-1.4-1.4 4.6-4.6H4v-2h12.2l-4.6-4.6L13 5Z" /></svg>
+        </button>
+        <div class="login-meta">
+          <span>2021 PRODUCT ARCHIVE</span>
+          <span>NO SIGN-IN REQUIRED</span>
+        </div>
+      </div>
+      <div class="login-socials" aria-label="Historical links">
+        <button type="button" data-notice="The original Twitter link is no longer active." aria-label="Historical Twitter link">
+          <img src="assets/twitter.svg" alt="" />
+        </button>
+        <button type="button" data-notice="The original support inbox is no longer monitored." aria-label="Historical support link">
+          <img src="assets/mail.svg" alt="" />
+        </button>
+      </div>
+    </section>
+
+    <div class="dashboard" id="dashboard" hidden>
+      <aside class="mobile-drawer" id="mobile-drawer" aria-label="Mobile navigation" aria-hidden="true">
+        <button class="drawer-close" id="drawer-close" type="button" aria-label="Close navigation">×</button>
+        <div class="sidebar-inner"></div>
+      </aside>
+
+      <aside class="sidebar" aria-label="Primary navigation">
+        <div class="sidebar-content">
+          <button class="logo-button" type="button" data-route="home" aria-label="Return to ProxyFarm home">
+            <img src="assets/proxyfarm-logo.png" alt="ProxyFarm" />
+          </button>
+          <nav class="sidebar-links">
+            <button type="button" data-route="isp">ISP</button>
+            <button type="button" data-route="residential">RESIDENTIAL</button>
+            <button type="button" data-route="purchase">PURCHASE</button>
+          </nav>
+          <div class="sidebar-bottom">
+            <span>2021 ARCHIVE</span>
+            <div class="sidebar-socials">
+              <button type="button" data-notice="The original support inbox is no longer monitored." aria-label="Historical email"><img src="assets/mail.svg" alt="" /></button>
+              <button type="button" data-notice="The original Twitter link is no longer active." aria-label="Historical Twitter"><img src="assets/twitter.svg" alt="" /></button>
+              <button type="button" id="terms-button" aria-label="View archive information">i</button>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main" id="main-content" tabindex="-1">
+        <div class="mobile-bar">
+          <button class="hamburger" id="hamburger" type="button" aria-label="Open navigation" aria-expanded="false"><span></span><span></span><span></span></button>
+          <span>PROXYFARM</span>
+        </div>
+
+        <header class="topbar">
+          <div class="page-title">
+            <h2 id="page-title">ISP</h2>
+            <p id="page-subtitle">Access your ISP proxies</p>
+          </div>
+          <div class="archive-user">
+            <div class="archive-avatar"><img src="assets/proxyfarm-arrow.png" alt="" /></div>
+            <span>2021 Archive</span>
+            <button type="button" data-route="home" aria-label="Exit dashboard">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4H4v16h6v-2H6V6h4V4Zm5.6 4.6L14.2 10H9v2h5.2l1.4 1.4L17 12l-1.4-1.4ZM18 5v14h2V5h-2Z" /></svg>
+            </button>
+          </div>
+        </header>
+
+        <div class="archive-banner" role="note">
+          <strong>ProxyFarm concluded operations in 2021.</strong>
+          <span>This preserved interface uses non-routable sample addresses and has no accounts, billing, or live proxy network.</span>
+        </div>
+
+        <section class="dashboard-view is-visible" data-view="isp" aria-labelledby="isp-heading">
+          <div class="section-heading">
+            <div><h3 id="isp-heading">ISP Proxy List</h3><p>Reserved sample records from the original dashboard format.</p></div>
+            <div class="section-actions">
+              <button class="outline-button" id="download-isp" type="button">Download CSV</button>
+              <button class="green-button compact" id="refresh-isp" type="button">Rotate records</button>
+            </div>
+          </div>
+          <article class="proxy-history">
+            <div class="history-head">
+              <div><span>ISP 25</span><small>ARCHIVED 03/04/2021</small></div>
+              <button class="copy-all" id="copy-isp" type="button">COPY ALL</button>
+            </div>
+            <div class="proxy-list" id="isp-list" aria-live="polite"></div>
+            <div class="history-foot"><span id="isp-count">25 sample endpoints</span><span>RFC 5737 · NON-ROUTABLE</span></div>
+          </article>
+        </section>
+
+        <section class="dashboard-view" data-view="residential" aria-labelledby="resi-heading">
+          <div class="residential-grid">
+            <article class="generator-card bordered-card">
+              <div class="card-heading"><img src="assets/proxyfarm-arrow.png" alt="" /><h3 id="resi-heading">GENERATOR</h3></div>
+              <form id="generator-form">
+                <label>Country<select id="country" required><option value="">Select a country</option><option value="US">United States</option><option value="GB">United Kingdom</option><option value="DE">Germany</option><option value="AU">Australia</option><option value="CA">Canada</option></select></label>
+                <label>Amount<input id="amount" type="number" min="1" max="100" value="10" required /></label>
+                <label>Type<select id="proxy-type" required><option value="rotating">Rotating session</option><option value="sticky">Sticky session</option></select></label>
+                <button class="green-button" id="generate-button" type="submit">Generate</button>
+              </form>
+            </article>
+
+            <article class="usage-card">
+              <h3>Data Usage</h3><p>See the archived plan status</p>
+              <div class="usage-table"><span>Status<strong>Inactive</strong></span><span>Data<strong>0 GB</strong></span><span>Used<strong>0 GB</strong></span></div>
+              <div class="usage-track"><span></span></div>
+              <small>Live usage tracking was disconnected with the service.</small>
+            </article>
+
+            <article class="booster-card">
+              <h3>Purchase Boosters</h3><p>Historical 2021 data packs</p>
+              <div class="booster-row"><button type="button" data-notice="Purchasing is no longer available."><i>1</i><span>1GB</span></button><button type="button" data-notice="Purchasing is no longer available."><i>2</i><span>2GB</span></button><button type="button" data-notice="Purchasing is no longer available."><i>3</i><span>3GB</span></button><button type="button" data-notice="Purchasing is no longer available."><i>4</i><span>4GB</span></button></div>
+              <button class="text-link" type="button" data-route="purchase">Visit the store for more →</button>
+            </article>
+
+            <article class="generated-card">
+              <div class="generated-title"><h3>Generated Proxies</h3><button id="copy-generated" type="button" disabled>Copy</button></div>
+              <textarea id="generated-output" readonly placeholder="Generated sample endpoints will appear here."></textarea>
+            </article>
+          </div>
+        </section>
+
+        <section class="dashboard-view" data-view="purchase" aria-labelledby="purchase-heading">
+          <div class="section-heading purchase-heading"><div><h3 id="purchase-heading">Proxy Plans</h3><p>Original plan structure, retained for historical reference.</p></div><span class="closed-badge">CHECKOUT CLOSED</span></div>
+          <div class="plans-grid">
+            <article class="plan-card">
+              <div class="card-heading"><img src="assets/proxyfarm-arrow.png" alt="" /><h3>ISP Proxies</h3></div>
+              <ul><li>No data restrictions</li><li>Private ISP endpoints</li><li>Username and password authentication</li><li>30-day plan period</li></ul>
+              <label>Plan<select id="isp-plan"><option value="50">25 ISP — $50</option><option value="90">50 ISP — $90</option><option value="160">100 ISP — $160</option></select></label>
+              <button class="green-button unavailable-button" type="button" data-notice="Checkout is permanently closed.">$50 · UNAVAILABLE</button>
+            </article>
+            <article class="plan-card">
+              <div class="card-heading residential-icon"><span>⌂</span><h3>Residential</h3></div>
+              <ul><li>Global rotating pool</li><li>Country-level targeting</li><li>Sticky session support</li><li>Usage-based data packs</li></ul>
+              <label>Data<select id="resi-plan"><option value="80">10 GB — $80</option><option value="160">25 GB — $160</option><option value="280">50 GB — $280</option></select></label>
+              <button class="green-button unavailable-button" type="button" data-notice="Checkout is permanently closed.">$80 · UNAVAILABLE</button>
+            </article>
+          </div>
+          <p class="purchase-note">Purchasing, discount codes, subscriptions, and card collection are disabled. No payment information can be submitted from this site.</p>
+        </section>
+
+        <footer class="dashboard-footer"><span>PROXYFARM · 2021 PRODUCT ARCHIVE</span><span id="footer-year"></span></footer>
+      </main>
+    </div>
+
+    <div class="loading-layer" id="loading-layer" hidden aria-live="polite" aria-label="Loading archived records">
+      <div class="loading-card">
+        <img src="assets/proxyfarm-arrow.png" alt="" />
+        <strong id="loading-title">Preparing archived records</strong>
+        <span id="loading-message">Locating sample endpoints…</span>
+        <div class="loading-track"><i id="loading-progress"></i></div>
+        <small id="loading-time">0.0s</small>
+      </div>
+    </div>
+
+    <dialog class="archive-dialog" id="archive-dialog">
+      <button class="dialog-close" id="dialog-close" type="button" aria-label="Close">×</button>
+      <img src="assets/proxyfarm-arrow.png" alt="" />
+      <span>PROXYFARM · 2021</span>
+      <h2>About this archive</h2>
+      <p>This static site preserves the look and interaction patterns of the original ProxyFarm dashboard. The service itself is closed.</p>
+      <ul><li>No login or customer account</li><li>No payment or subscription flow</li><li>No server, database, or live proxy network</li><li>All displayed IPs are reserved for documentation</li></ul>
+    </dialog>
+
+    <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+    <script src="app.js" defer></script>
+  </body>
+</html>
