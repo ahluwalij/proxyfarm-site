@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="ProxyFarm residential and ISP proxy dashboard." />
     <meta name="theme-color" content="#27c88a" />
+    <meta name="referrer" content="no-referrer" />
     <title>ProxyFarm — Proxy Dashboard</title>
     <link rel="icon" href="assets/proxyfarm-logo.png" type="image/png" />
     <link rel="stylesheet" href="styles.css" />
@@ -23,10 +24,9 @@
           <span>Continue with Discord</span>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m13 5 7 7-7 7-1.4-1.4 4.6-4.6H4v-2h12.2l-4.6-4.6L13 5Z" /></svg>
         </button>
-        <button class="preview-entry" id="preview-entry" type="button">Preview the dashboard <span aria-hidden="true">→</span></button>
         <div class="login-meta">
-          <span>DISCORD OAUTH</span>
-          <span>DEMO DASHBOARD</span>
+          <span>SECURE DISCORD SIGN-IN</span>
+          <span>IDENTITY SCOPE ONLY</span>
         </div>
       </div>
       <div class="login-socials" aria-label="ProxyFarm links">
@@ -43,7 +43,7 @@
 
       <aside class="sidebar" aria-label="Primary navigation">
         <div class="sidebar-content">
-          <button class="logo-button" type="button" data-route="home" aria-label="Return to ProxyFarm home">
+          <button class="logo-button" type="button" data-route="isp" aria-label="Open ISP dashboard">
             <img src="assets/proxyfarm-logo.png" alt="ProxyFarm" />
           </button>
           <nav class="sidebar-links">
@@ -65,7 +65,7 @@
             <div class="sidebar-socials">
               <a href="mailto:support@proxy-farm.com" aria-label="Email support"><img src="assets/mail.svg" alt="" /></a>
               <a href="https://twitter.com/proxyfarm" target="_blank" rel="noreferrer" aria-label="ProxyFarm on Twitter"><img src="assets/twitter.svg" alt="" /></a>
-              <button type="button" data-info aria-label="View demo information">i</button>
+              <button type="button" data-info aria-label="View account help">i</button>
             </div>
           </div>
         </div>
@@ -84,7 +84,7 @@
           </div>
           <div class="account-user">
             <div class="account-avatar"><img id="account-avatar" src="assets/proxyfarm-arrow.png" alt="" /></div>
-            <span id="account-name">Demo Account</span>
+            <span id="account-name">ProxyFarm Account</span>
             <button type="button" id="logout-button" aria-label="Log out">
               <svg viewBox="0 0 16 20" aria-hidden="true"><path d="M0 10a1 1 0 0 0 1 1h7.6l-2.3 2.3a1 1 0 1 0 1.4 1.4l4-4a1 1 0 0 0 0-1.4l-4-4a1 1 0 1 0-1.4 1.4L8.6 9H1a1 1 0 0 0-1 1Zm13-10H3a3 3 0 0 0-3 3v3a1 1 0 0 0 2 0V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-3a1 1 0 0 0-2 0v3a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3Z" /></svg>
             </button>
@@ -93,21 +93,21 @@
 
         <div class="status-banner" role="status">
           <span class="status-pulse" aria-hidden="true"></span>
-          <strong>All systems operational</strong>
-          <span>ISP and residential gateways are responding normally.</span>
+          <strong>Account tools ready</strong>
+          <span>Credential formatting, export, and plan requests are available.</span>
         </div>
 
         <section class="dashboard-view is-visible" data-view="isp" aria-labelledby="isp-heading">
           <div class="section-heading">
-            <div><h3 id="isp-heading">ISP Proxy List</h3><p>Your allocated private ISP endpoints.</p></div>
+            <div><h3 id="isp-heading">ISP Proxy List</h3><p>Create and export ISP credentials in standard proxy format.</p></div>
             <div class="section-actions">
               <button class="outline-button csv-button" id="download-isp" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 3h2v10l3.5-3.5 1.4 1.4-5.9 5.9-5.9-5.9 1.4-1.4L11 13V3Zm-6 16h14v2H5v-2Z" /></svg>Download CSV</button>
-              <button class="green-button compact" id="refresh-isp" type="button">Rotate credentials</button>
+              <button class="green-button compact" id="refresh-isp" type="button">Refresh list</button>
             </div>
           </div>
           <article class="proxy-history">
             <div class="history-head">
-              <div><span>ISP 25</span><small>ACTIVE ALLOCATION · USER/PASS AUTH</small></div>
+              <div><span>ISP 25</span><small>CREDENTIAL FORMAT · USER/PASS AUTH</small></div>
               <button class="copy-all" id="copy-isp" type="button">COPY ALL</button>
             </div>
             <div class="proxy-list" id="isp-list" aria-live="polite"></div>
@@ -130,14 +130,14 @@
             <article class="usage-card">
               <div class="metric-icon" aria-hidden="true"><svg viewBox="0 0 42 42"><path d="M21 3C11.4 3 5 5.8 5 9.4s6.4 6.4 16 6.4 16-2.8 16-6.4S30.6 3 21 3Zm-16 11v6c0 3.6 6.4 6.4 16 6.4s16-2.8 16-6.4v-6c-3.3 2.7-9 4.2-16 4.2S8.3 16.7 5 14Zm0 11v5.6c0 4.2 7.6 6.4 16 6.4s16-2.2 16-6.4V25c-3.3 2.7-9 4.2-16 4.2S8.3 27.7 5 25Z" /></svg></div>
               <h3>Data Usage</h3><p>Current residential plan</p>
-              <div class="usage-table"><span>Status<strong>Active</strong></span><span>Data<strong id="plan-data">50 GB</strong></span><span>Used<strong id="used-data">12.4 GB</strong></span></div>
+              <div class="usage-table"><span>Status<strong>Ready</strong></span><span>Data<strong id="plan-data">50 GB</strong></span><span>Used<strong id="used-data">0.0 GB</strong></span></div>
               <div class="usage-track"><span id="usage-progress"></span></div>
-              <small id="usage-caption">37.6 GB remaining in this billing period.</small>
+              <small id="usage-caption">Usage updates when an account data source is connected.</small>
             </article>
 
             <article class="booster-card">
               <div class="metric-icon bolt-icon" aria-hidden="true"><svg viewBox="0 0 31 49"><path d="M30.4 18.8a1 1 0 0 0-.9-.5H17.1L19.2 1a1 1 0 0 0-1.9-.6L.1 29a1 1 0 0 0 .9 1.5h12.2l-1.7 17.2a1 1 0 0 0 1.9.6l17-28.5Z" /></svg></div>
-              <h3>Purchase Boosters</h3><p>Add data to the current plan</p>
+              <h3>Request Boosters</h3><p>Ask support to add data to your plan</p>
               <div class="booster-row"><button type="button" data-booster="1"><i>1</i><span>1GB</span></button><button type="button" data-booster="2"><i>2</i><span>2GB</span></button><button type="button" data-booster="3"><i>3</i><span>3GB</span></button><button type="button" data-booster="4"><i>4</i><span>4GB</span></button></div>
               <button class="text-link" type="button" data-route="purchase">Visit the store for more →</button>
             </article>
@@ -150,22 +150,22 @@
         </section>
 
         <section class="dashboard-view" data-view="purchase" aria-labelledby="purchase-heading">
-          <div class="section-heading purchase-heading"><div><h3 id="purchase-heading">Proxy Plans</h3><p>Choose a package for the demo account.</p></div><span class="available-badge">PLANS AVAILABLE</span></div>
+          <div class="section-heading purchase-heading"><div><h3 id="purchase-heading">Proxy Plans</h3><p>Choose a package and send a pre-addressed order request.</p></div><span class="available-badge">ORDER BY EMAIL</span></div>
           <div class="plans-grid">
             <article class="plan-card">
               <div class="card-heading"><svg class="product-icon" viewBox="0 0 20 18" aria-hidden="true"><path d="M1 2h3l2.1 9.1a2 2 0 0 0 2 1.6h7.4a2 2 0 0 0 1.9-1.4L19 5H6.1l-.5-2.2A1 1 0 0 0 4.6 2H1Zm7.2 13.1a1.45 1.45 0 1 0 0 2.9 1.45 1.45 0 0 0 0-2.9Zm7.2 0a1.45 1.45 0 1 0 0 2.9 1.45 1.45 0 0 0 0-2.9Z" /></svg><h3>ISP Proxies</h3></div>
               <ul><li>No data restrictions</li><li>Private ISP endpoints</li><li>Username and password authentication</li><li>30-day plan period</li></ul>
-              <label>Plan<select id="isp-plan"><option value="50">25 ISP — $50</option><option value="90">50 ISP — $90</option><option value="160">100 ISP — $160</option></select></label>
-              <button class="green-button plan-button" type="button" data-plan="ISP 25">ADD TO ACCOUNT · $50</button>
+              <label>Plan<select id="isp-plan"><option value="50" data-plan="25 ISP">25 ISP — $50</option><option value="90" data-plan="50 ISP">50 ISP — $90</option><option value="160" data-plan="100 ISP">100 ISP — $160</option></select></label>
+              <button class="green-button plan-button" type="button" data-plan="25 ISP" data-price="50">REQUEST PLAN · $50</button>
             </article>
             <article class="plan-card">
               <div class="card-heading"><svg class="product-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a8 8 0 0 0-8 8v2H2v8h20v-8h-2v-2a8 8 0 0 0-8-8Zm-5 8a5 5 0 0 1 10 0v2H7v-2Zm-2 5h14v2H5v-2Z" /></svg><h3>Residential</h3></div>
               <ul><li>Global rotating pool</li><li>Country-level targeting</li><li>Sticky session support</li><li>Usage-based data packs</li></ul>
-              <label>Data<select id="resi-plan"><option value="80">10 GB — $80</option><option value="160">25 GB — $160</option><option value="280">50 GB — $280</option></select></label>
-              <button class="green-button plan-button" type="button" data-plan="Residential 10 GB">ADD TO ACCOUNT · $80</button>
+              <label>Data<select id="resi-plan"><option value="80" data-plan="Residential 10 GB">10 GB — $80</option><option value="160" data-plan="Residential 25 GB">25 GB — $160</option><option value="280" data-plan="Residential 50 GB">50 GB — $280</option></select></label>
+              <button class="green-button plan-button" type="button" data-plan="Residential 10 GB" data-price="80">REQUEST PLAN · $80</button>
             </article>
           </div>
-          <p class="purchase-note">Plan selection updates this browser-only demo account. No card details or payment information are collected.</p>
+          <p class="purchase-note">Order requests open in your email app addressed to ProxyFarm support. This dashboard never asks for or stores card details.</p>
         </section>
 
         <footer class="dashboard-footer"><span>PROXYFARM · PREMIUM PROXY INFRASTRUCTURE</span><span id="footer-year"></span></footer>
@@ -176,7 +176,7 @@
       <div class="loading-card">
         <img src="assets/proxyfarm-arrow.png" alt="" />
         <strong id="loading-title">Preparing proxy records</strong>
-        <span id="loading-message">Connecting to gateways…</span>
+        <span id="loading-message">Preparing your workspace…</span>
         <div class="loading-track"><i id="loading-progress"></i></div>
         <small id="loading-time">0.0s</small>
       </div>
@@ -185,10 +185,10 @@
     <dialog class="info-dialog" id="info-dialog">
       <button class="dialog-close" id="dialog-close" type="button" aria-label="Close">×</button>
       <img src="assets/proxyfarm-arrow.png" alt="" />
-      <span>PROXYFARM · DEMO ENVIRONMENT</span>
-      <h2>About this dashboard</h2>
-      <p>This interface demonstrates the ProxyFarm customer experience. Endpoint credentials follow the production format but are not connected to a proxy network.</p>
-      <ul><li>Discord authorization requests basic identity only</li><li>Credentials are generated locally in your browser</li><li>Plan changes stay in the current browser session</li><li>No payment information is collected</li></ul>
+      <span>PROXYFARM · ACCOUNT HELP</span>
+      <h2>Using the dashboard</h2>
+      <p>Sign in with Discord to access credential tools, exports, and plan requests.</p>
+      <ul><li>Discord authorization requests basic identity only</li><li>Credentials use the standard host:port:username:password format</li><li>CSV and clipboard exports are generated on your device</li><li>Plan requests are sent directly to ProxyFarm support</li></ul>
     </dialog>
 
     <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>

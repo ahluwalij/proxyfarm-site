@@ -3,7 +3,8 @@
 
   const DISCORD_CLIENT_ID = "827569848086822924";
   const DISCORD_STATE_KEY = "proxyfarm-discord-state";
-  const ACCOUNT_KEY = "proxyfarm-demo-account";
+  const ACCOUNT_KEY = "proxyfarm-account";
+  const SUPPORT_EMAIL = "support@proxy-farm.com";
   const $ = (selector, parent = document) => parent.querySelector(selector);
   const $$ = (selector, parent = document) => [...parent.querySelectorAll(selector)];
   const wait = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
@@ -17,8 +18,9 @@
   let ispRecords = [];
   let generatedRecords = [];
   let loading = false;
+  let activeAccount = null;
   let planData = 50;
-  const usedData = 12.4;
+  const usedData = 0;
 
   function randomString(length) {
     const alphabet = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789";
@@ -36,7 +38,6 @@
       : `pf_isp-${randomString(8).toLowerCase()}`;
     return {
       endpoint: `${host}:${port}:${user}:${password}`,
-      response: random(90, 680),
     };
   }
 
@@ -74,7 +75,7 @@
       const button = document.createElement("button");
       row.className = "proxy-row";
       endpoint.textContent = record.endpoint;
-      status.textContent = `${record.response}ms · ONLINE`;
+      status.textContent = "FORMATTED";
       button.type = "button";
       button.textContent = "COPY";
       button.addEventListener("click", () => copyText(record.endpoint, "Endpoint copied"));
@@ -90,7 +91,7 @@
     $("#plan-data").textContent = `${planData} GB`;
     $("#used-data").textContent = `${usedData.toFixed(1)} GB`;
     $("#usage-progress").style.width = `${Math.min(100, (usedData / planData) * 100)}%`;
-    $("#usage-caption").textContent = `${remaining.toFixed(1)} GB remaining in this billing period.`;
+    $("#usage-caption").textContent = `${remaining.toFixed(1)} GB configured. Usage updates when an account data source is connected.`;
   }
 
   async function runLoading(title, phases) {
@@ -126,16 +127,17 @@
   }
 
   function setAccount(user) {
-    const account = user || { username: "Demo Account", demo: true };
+    const account = user || { username: "ProxyFarm Account" };
+    activeAccount = account;
     $("#account-name").textContent = account.global_name || account.username || "ProxyFarm User";
     $("#account-avatar").src = accountAvatarUrl(account);
-    $("#account-avatar").alt = account.demo ? "" : `${account.username || "Discord"} avatar`;
+    $("#account-avatar").alt = `${account.username || "Discord"} avatar`;
     sessionStorage.setItem(ACCOUNT_KEY, JSON.stringify(account));
   }
 
   async function enterDashboard(user, withLoading = true) {
     if (withLoading) {
-      const completed = await runLoading("Opening your dashboard", ["Authenticating session…", "Loading proxy allocations…", "Connecting to gateways…"]);
+      const completed = await runLoading("Opening your dashboard", ["Authenticating session…", "Loading account tools…", "Preparing your workspace…"]);
       if (!completed) return;
     }
     setAccount(user);
@@ -168,7 +170,15 @@
   async function handleDiscordCallback() {
     const params = new URLSearchParams(location.hash.slice(1));
     const accessToken = params.get("access_token");
-    if (!accessToken) return false;
+    const oauthError = params.get("error");
+    if (!accessToken && !oauthError) return false;
+
+    if (oauthError) {
+      history.replaceState(null, "", "/");
+      sessionStorage.removeItem(DISCORD_STATE_KEY);
+      showToast("Discord sign-in was cancelled. Please try again.");
+      return true;
+    }
 
     const expectedState = sessionStorage.getItem(DISCORD_STATE_KEY);
     const returnedState = params.get("state");
@@ -196,9 +206,10 @@
 
   function logout() {
     sessionStorage.removeItem(ACCOUNT_KEY);
+    activeAccount = null;
     $("#dashboard").hidden = true;
     $("#login-screen").hidden = false;
-    history.replaceState(null, "", "#home");
+    history.replaceState(null, "", "/");
     closeDrawer();
     showToast("Signed out");
   }
@@ -209,6 +220,13 @@
       $("#login-screen").hidden = false;
       if (updateHash) history.replaceState(null, "", "#home");
       closeDrawer();
+      return;
+    }
+    if (!activeAccount) {
+      $("#dashboard").hidden = true;
+      $("#login-screen").hidden = false;
+      history.replaceState(null, "", "/");
+      showToast("Sign in with Discord to continue");
       return;
     }
     if (!routeDetails[route]) route = "isp";
@@ -240,11 +258,11 @@
   async function rotateIsp() {
     const button = $("#refresh-isp");
     button.disabled = true;
-    const completed = await runLoading("Rotating credentials", ["Selecting gateway ports…", "Generating account credentials…", "Running latency checks…", "Activating endpoints…"]);
+    const completed = await runLoading("Refreshing credentials", ["Preparing gateway format…", "Generating account credentials…", "Validating endpoint syntax…", "Updating the list…"]);
     if (completed) {
       ispRecords = makeBatch(25);
       renderIsp();
-      showToast("25 ISP credentials rotated");
+      showToast("25 ISP credentials refreshed");
     }
     button.disabled = false;
   }
@@ -260,7 +278,7 @@
       return;
     }
     button.disabled = true;
-    const completed = await runLoading("Generating endpoints", ["Applying region settings…", `Preparing ${sessionType} sessions…`, "Creating credentials…", "Writing the output…"]);
+    const completed = await runLoading("Generating endpoints", ["Applying region settings…", `Formatting ${sessionType} sessions…`, "Creating credentials…", "Writing the output…"]);
     if (completed) {
       generatedRecords = makeBatch(amount, "residential", country, sessionType);
       $("#generated-output").value = generatedRecords.map(({ endpoint }) => endpoint).join("\n");
@@ -271,7 +289,7 @@
   }
 
   function exportCsv() {
-    const rows = ["endpoint,response_ms,status", ...ispRecords.map(({ endpoint, response }) => `${endpoint},${response},online`)];
+    const rows = ["endpoint,status", ...ispRecords.map(({ endpoint }) => `${endpoint},formatted`)];
     const blob = new Blob([rows.join("\n")], { type: "text/csv;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
@@ -282,19 +300,30 @@
     showToast("CSV downloaded");
   }
 
-  function addBooster(amount) {
-    planData += amount;
-    renderUsage();
-    showToast(`${amount} GB added to the demo plan`);
+  function openSupportRequest(item, price = "") {
+    const accountName = activeAccount?.global_name || activeAccount?.username || "ProxyFarm customer";
+    const accountId = activeAccount?.id ? `Discord user ID: ${activeAccount.id}\n` : "";
+    const subject = `ProxyFarm order request — ${item}`;
+    const priceLine = price ? `Listed price: $${price}\n` : "";
+    const body = `Hi ProxyFarm,\n\nI would like to request ${item}.\n${priceLine}Discord account: ${accountName}\n${accountId}\nPlease send the next steps.\n`;
+    const link = document.createElement("a");
+    link.href = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    link.click();
+    showToast("Opening your email app with the order request");
+  }
+
+  function requestBooster(amount) {
+    openSupportRequest(`${amount} GB residential booster`);
   }
 
   function updatePlanButton(select) {
     const card = select.closest(".plan-card");
     const option = select.selectedOptions[0];
-    const planName = option.textContent.split("—")[0].trim();
+    const planName = option.dataset.plan;
     const button = card.querySelector(".plan-button");
     button.dataset.plan = planName;
-    button.textContent = `ADD TO ACCOUNT · $${select.value}`;
+    button.dataset.price = select.value;
+    button.textContent = `REQUEST PLAN · $${select.value}`;
   }
 
   function cloneSidebarForMobile() {
@@ -305,7 +334,6 @@
 
   function bindEvents() {
     $("#discord-login").addEventListener("click", startDiscordLogin);
-    $("#preview-entry").addEventListener("click", () => enterDashboard({ username: "Demo Account", demo: true }));
     $("#logout-button").addEventListener("click", logout);
     $("#hamburger").addEventListener("click", openDrawer);
     $("#drawer-close").addEventListener("click", closeDrawer);
@@ -323,9 +351,9 @@
       const infoButton = event.target.closest("[data-info]");
       if (infoButton) $("#info-dialog").showModal();
       const booster = event.target.closest("[data-booster]");
-      if (booster) addBooster(Number(booster.dataset.booster));
+      if (booster) requestBooster(Number(booster.dataset.booster));
       const planButton = event.target.closest("[data-plan]");
-      if (planButton) showToast(`${planButton.dataset.plan} added to the demo account`);
+      if (planButton) openSupportRequest(planButton.dataset.plan, planButton.dataset.price);
     });
 
     $("#isp-plan").addEventListener("change", (event) => updatePlanButton(event.target));
@@ -346,12 +374,13 @@
 
     const savedAccount = sessionStorage.getItem(ACCOUNT_KEY);
     const initialRoute = location.hash.slice(1);
-    if (savedAccount && initialRoute && initialRoute !== "home") {
+    if (savedAccount) {
       try {
         setAccount(JSON.parse(savedAccount));
-        routeTo(routeDetails[initialRoute] ? initialRoute : "isp", false);
+        routeTo(routeDetails[initialRoute] ? initialRoute : "isp", !initialRoute);
       } catch (_) {
         sessionStorage.removeItem(ACCOUNT_KEY);
+        activeAccount = null;
       }
     }
   }

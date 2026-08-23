@@ -41,9 +41,6 @@ button { color: inherit; }
 .dashboard-entry > svg { width: 28px; fill: currentColor; transition: transform 160ms ease; }
 .discord-mark svg { width: 28px; fill: #fff; }
 .dashboard-entry:hover > svg { transform: translateX(6px); }
-.preview-entry { margin: 12px 0 0 74px; border: 0; background: transparent; padding: 0; color: #89908c; cursor: pointer; font-size: 12px; font-weight: 600; }
-.preview-entry:hover, .preview-entry:focus-visible { color: var(--green-dark); outline: none; }
-.preview-entry span { margin-left: 5px; }
 .login-meta { display: flex; gap: 24px; margin: 30px 0 0 74px; color: #a2a8a5; font-size: 9px; font-weight: 700; letter-spacing: .14em; }
 .login-socials { position: fixed; right: 20px; top: 50%; display: flex; flex-direction: column; gap: 12px; transform: translateY(-50%); }
 .login-socials a, .sidebar-socials a, .sidebar-socials button { display: grid; width: 45px; height: 45px; place-items: center; border: 0; background: transparent; cursor: pointer; }
@@ -212,7 +209,6 @@ select:focus, input:focus, textarea:focus { border-color: var(--green); box-shad
   .discord-mark { width: 38px; height: 38px; border-radius: 12px; }
   .discord-mark svg { width: 22px; }
   .dashboard-entry > span:not(.discord-mark) { font-size: 23px; line-height: 1.15; }
-  .preview-entry { margin-left: 51px; }
   .login-meta { align-items: flex-start; flex-direction: column; gap: 7px; margin: 25px 0 0 51px; }
   .main { width: 100%; max-width: 100vw; overflow-x: hidden; padding-right: 16px; padding-left: 16px; }
   .topbar { align-items: flex-start; }
