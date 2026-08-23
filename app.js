@@ -22,6 +22,17 @@
   let planData = 50;
   const usedData = 0;
 
+  async function retireLegacyOfflineCache() {
+    if ("serviceWorker" in navigator) {
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(registrations.map((registration) => registration.unregister()));
+    }
+    if ("caches" in window) {
+      const keys = await caches.keys();
+      await Promise.all(keys.map((key) => caches.delete(key)));
+    }
+  }
+
   function randomString(length) {
     const alphabet = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789";
     const bytes = new Uint8Array(length);
@@ -363,6 +374,7 @@
   }
 
   async function initialize() {
+    retireLegacyOfflineCache().catch(() => {});
     ispRecords = makeBatch(25);
     renderIsp();
     renderUsage();
