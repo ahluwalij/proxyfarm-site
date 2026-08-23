@@ -1,10 +1,11 @@
-# ProxyFarm 2021 static site
+# ProxyFarm static dashboard
 
-This is a cleaned-up static preservation of the original ProxyFarm frontend.
+This standalone frontend recreates the ProxyFarm customer dashboard as an interactive product demo.
 
-- No backend, database, authentication, or payment integration
-- No build step or third-party runtime dependencies
-- Sample endpoints use RFC 5737 documentation ranges only
-- Loading and response timings are generated locally in the browser
+- Production-shaped ISP and residential proxy credentials generated locally
+- Discord OAuth identity flow with the `identify` scope only
+- Browser-session account state with no persistent access token
+- Interactive credential rotation, proxy generation, plan selection, copy, and CSV export
+- No payment collection, customer database, or connected proxy network
 
-Run locally with `python3 -m http.server 4173 --directory archive-site`.
+From this directory, run `python3 -m http.server 4173`.
